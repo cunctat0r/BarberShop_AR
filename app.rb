@@ -41,7 +41,7 @@ post '/visit' do
   	client.save
   	erb "Отлично, #{loaded[:name]}, мастер #{loaded[:barber]} будет Вас ждать в #{loaded[:datestamp]}"
   else
-  	@error = "Вы не ввели один из необходимых параметров"
+  	@error = client.errors.full_messages.first
   	erb :visit
   end
 end
@@ -63,7 +63,7 @@ post '/contacts' do
   	contact.save
   	redirect to "/contacts"
   else
-  	@error = "Вы не ввели один из необходимых параметров"
+  	@error = contact.errors.full_messages.first
   	return erb :contacts
   end
   
