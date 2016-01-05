@@ -75,5 +75,5 @@ get '/about' do
 end
 
 get '/barber/:id' do
-  erb "Barber page"
+  erb :barber
 end
