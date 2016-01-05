@@ -17,6 +17,8 @@ class Barber < ActiveRecord::Base
 end
 
 class Contact < ActiveRecord::Base
+	validates :author, presence: true
+	validates :message, presence: true
 end
 
 before do
@@ -24,8 +26,7 @@ before do
 	@contacts = Contact.order "created_at DESC"
 end
 
-get '/' do
-	
+get '/' do	
 	erb :index
 end
 
@@ -33,14 +34,16 @@ get '/visit' do
   erb :visit
 end
 
-post '/visit' do
-  
+post '/visit' do  
   loaded = params[:client]
   client = Client.new loaded
-  client.save
-
-  erb "Отлично, #{loaded[:name]}, мастер #{loaded[:barber]} будет Вас ждать в #{loaded[:datestamp]}"
-
+  if client.valid?
+  	client.save
+  	erb "Отлично, #{loaded[:name]}, мастер #{loaded[:barber]} будет Вас ждать в #{loaded[:datestamp]}"
+  else
+  	@error = "Вы не ввели один из необходимых параметров"
+  	erb :visit
+  end
 end
 
 get '/showusers' do
@@ -53,25 +56,17 @@ get '/contacts' do
 end
 
 post '/contacts' do
-  err_hash = {:author => 'Представьтесь, пожалуйста',
-              :message => 'Напишите что-нибудь'
-          }
-
   loaded = params[:contact]
 
-  err_hash.each do |key, value|
-    if loaded[key] == ''
-      @error = err_hash[key]      
-      return erb :contacts
-    end
-  end
-
   contact = Contact.new loaded
-  contact.save
-
-  #erb "Ваше сообщение очень важно для нас, #{@author}!"
-  redirect to "/contacts"
-
+  if contact.valid?
+  	contact.save
+  	redirect to "/contacts"
+  else
+  	@error = "Вы не ввели один из необходимых параметров"
+  	return erb :contacts
+  end
+  
 end
 
 get '/about' do
