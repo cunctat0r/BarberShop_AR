@@ -48,7 +48,7 @@ post '/visit' do
 end
 
 get '/showusers' do
-  @results = Client.order "created_at DESC"
+  @users = Client.order "created_at DESC"
   erb :showusers
 end
 
