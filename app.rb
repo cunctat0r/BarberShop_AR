@@ -48,13 +48,8 @@ post '/visit' do
     end
   end
 
-  client = Client.new 
-  client.name = @username
-  client.phone = @phone
-  client.datestamp = @datetime
-  client.barber = @barber
-  client.color = @color 
-  client.save
+  c = Client.new params[:client]
+  c.save
 
   erb "Отлично, #{@username}, мастер #{@barber} будет Вас ждать в #{@datetime}"
 
@@ -69,10 +64,7 @@ get '/showusers' do
   erb :showusers
 end
 
-get '/contacts' do
-
-  
-
+get '/contacts' do  
   erb :contacts
 end
 
