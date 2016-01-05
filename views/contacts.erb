@@ -1,0 +1,26 @@
+<h2>Отзывы благодарных покупателей</h2>
+<br/ >
+<% @contacts.each do |post| %>
+	<p>
+		<%= post.message %>
+		<br/ >	
+		<br/ >	
+		<span style="font-size:75%; color:#999">Сотворено <%= post.created_at %> автором <%= post.author %></span>
+		<br/ >				
+	</p>
+	<hr/ >
+<% end %>
+<h4>Напишите нам:</h4>	
+<p>
+	<form action="/contacts" method="POST" role="form">
+		<div class="form-group">
+    		<label>Представьтесь, пожалуйста:</label>
+    		<input name="author" type="text" class="form-control" placeholder="Ваше имя">
+  		</div>
+  		<div class="form-group">
+  			<label>Ваш комментарий:</label>
+	    	<textarea name="message" class="form-control" rows="6" placeholder="Введите вашу мысль"></textarea>
+	    </div>
+	    <button type="submit" class="btn btn-primary">Отправить</button>
+	</form>
+</p>

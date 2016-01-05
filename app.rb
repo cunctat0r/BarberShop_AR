@@ -12,8 +12,12 @@ end
 class Barber < ActiveRecord::Base
 end
 
+class Contact < ActiveRecord::Base
+end
+
 before do
 	@barbers = Barber.order "created_at DESC"
+	@contacts = Contact.order "created_at DESC"
 end
 
 get '/' do
@@ -58,4 +62,38 @@ get '/showusers' do
   @results = Client.order "created_at DESC"
 
   erb :showusers
+end
+
+get '/contacts' do
+
+  
+
+  erb :contacts
+end
+
+post '/contacts' do
+  @author = params[:author]
+  @message = params[:message]
+
+  err_hash = {:author => 'Представьтесь, пожалуйста',
+              :message => 'Напишите что-нибудь'
+          }
+
+  err_hash.each do |key, value|
+    if params[key] == ''
+      @error = err_hash[key]      
+      return erb :contacts
+    end
+  end
+
+  contact = Contact.new :author => @author, :message => @message
+  contact.save
+
+  #erb "Ваше сообщение очень важно для нас, #{@author}!"
+  redirect to "/contacts"
+
+end
+
+get '/about' do
+  erb "Наша парикмахерская -- самая парикмахерская в мире!"
 end
