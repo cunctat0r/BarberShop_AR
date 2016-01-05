@@ -9,13 +9,13 @@
 		</tr>
 	</thead>
 	<tbody>
-		<% @users.each do |row| %>
+		<% @users.each do |client| %>
 			<tr>
-				<td><%= row['name'] %></td>
-				<td><%= row['phone'] %></td>
-				<td><%= row['datestamp'] %></td>
-				<td><%= row['barber'] %></td>
-				<td style="background-color: <%= row['color'] %>"><%= row['color'] %></td>
+				<td><a href="/client/<%= client.id %>"><%= client.name %></a></td>
+				<td><%= client.phone %></td>
+				<td><%= client.datestamp %></td>
+				<td><%= client.barber %></td>
+				<td style="background-color: <%= client.color %>"><%= client.color %></td>
 			</tr>
 		<% end %>	
 	</tbody>
