@@ -7,6 +7,10 @@ require 'sinatra/activerecord'
 set :database, "sqlite3:barbershop.db"
 
 class Client < ActiveRecord::Base
+	validates :name, presence: true
+	validates :phone, presence: true
+	validates :datestamp, presence: true
+	validates :color, presence: true	
 end
 
 class Barber < ActiveRecord::Base
@@ -31,20 +35,7 @@ end
 
 post '/visit' do
   
-  err_hash = {:name => 'Введите имя',
-              :phone => 'Введите телефон',
-              :datestamp => 'Введите дату и время',
-              :color => 'Выберите цвет'}
-
   loaded = params[:client]
-  err_hash.each do |key, value|
-    if loaded[key] == ''
-      @error = err_hash[key]      
-      return erb :visit
-    end
-  end
-
-
   client = Client.new loaded
   client.save
 
