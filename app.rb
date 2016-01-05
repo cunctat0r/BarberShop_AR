@@ -32,7 +32,30 @@ post '/visit' do
   @barber = params[:barber]
   @color = params[:color]
 
-  
+  err_hash = {:username => 'Введите имя',
+              :phone => 'Введите телефон',
+              :datetime => 'Введите дату и время',
+              :color => 'Выберите цвет'}
+
+  err_hash.each do |key, value|
+    if params[key] == ''
+      @error = err_hash[key]      
+      return erb :visit
+    end
+  end
+
+  client = Client.new :name => @username, :phone => @phone, :datestamp => @datetime, :barber => @barber, :color => @color 
+  client.save
+
   erb "Отлично, #{@username}, мастер #{@barber} будет Вас ждать в #{@datetime}"
 
+end
+
+get '/showusers' do
+  #db = get_db
+  #db.results_as_hash = true
+
+  @results = Client.order "created_at DESC"
+
+  erb :showusers
 end
