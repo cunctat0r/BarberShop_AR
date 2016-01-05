@@ -73,3 +73,7 @@ end
 get '/about' do
   erb "Наша парикмахерская -- самая парикмахерская в мире!"
 end
+
+get '/barber/:id' do
+  erb "Barber page"
+end
