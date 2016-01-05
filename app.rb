@@ -24,24 +24,25 @@ end
 before do
 	@barbers = Barber.order "created_at DESC"
 	@contacts = Contact.order "created_at DESC"
+	@client = Client.new
 end
 
 get '/' do	
 	erb :index
 end
 
-get '/visit' do
+get '/visit' do  
   erb :visit
 end
 
 post '/visit' do  
   loaded = params[:client]
-  client = Client.new loaded
-  if client.valid?
-  	client.save
+  @client = Client.new loaded
+  if @client.valid?
+  	@client.save
   	erb "Отлично, #{loaded[:name]}, мастер #{loaded[:barber]} будет Вас ждать в #{loaded[:datestamp]}"
   else
-  	@error = client.errors.full_messages.first
+  	@error = @client.errors.full_messages.first
   	erb :visit
   end
 end
