@@ -30,37 +30,30 @@ get '/visit' do
 end
 
 post '/visit' do
-  @username = params[:username]
-  @phone = params[:phone]
-  @datetime = params[:datetime]
-  @barber = params[:barber]
-  @color = params[:color]
-
-  err_hash = {:username => 'Введите имя',
+  
+  err_hash = {:name => 'Введите имя',
               :phone => 'Введите телефон',
-              :datetime => 'Введите дату и время',
+              :datestamp => 'Введите дату и время',
               :color => 'Выберите цвет'}
 
+  loaded = params[:client]
   err_hash.each do |key, value|
-    if params[key] == ''
+    if loaded[key] == ''
       @error = err_hash[key]      
       return erb :visit
     end
   end
 
-  c = Client.new params[:client]
-  c.save
 
-  erb "Отлично, #{@username}, мастер #{@barber} будет Вас ждать в #{@datetime}"
+  client = Client.new loaded
+  client.save
+
+  erb "Отлично, #{loaded[:name]}, мастер #{loaded[:barber]} будет Вас ждать в #{loaded[:datestamp]}"
 
 end
 
 get '/showusers' do
-  #db = get_db
-  #db.results_as_hash = true
-
   @results = Client.order "created_at DESC"
-
   erb :showusers
 end
 
@@ -69,23 +62,20 @@ get '/contacts' do
 end
 
 post '/contacts' do
-  @author = params[:author]
-  @message = params[:message]
-
   err_hash = {:author => 'Представьтесь, пожалуйста',
               :message => 'Напишите что-нибудь'
           }
 
+  loaded = params[:contact]
+
   err_hash.each do |key, value|
-    if params[key] == ''
+    if loaded[key] == ''
       @error = err_hash[key]      
       return erb :contacts
     end
   end
 
-  contact = Contact.new 
-  contact.author = @author
-  contact.message = @message
+  contact = Contact.new loaded
   contact.save
 
   #erb "Ваше сообщение очень важно для нас, #{@author}!"
