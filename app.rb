@@ -48,7 +48,12 @@ post '/visit' do
     end
   end
 
-  client = Client.new :name => @username, :phone => @phone, :datestamp => @datetime, :barber => @barber, :color => @color 
+  client = Client.new 
+  client.name = @username
+  client.phone = @phone
+  client.datestamp = @datetime
+  client.barber = @barber
+  client.color = @color 
   client.save
 
   erb "Отлично, #{@username}, мастер #{@barber} будет Вас ждать в #{@datetime}"
@@ -86,7 +91,9 @@ post '/contacts' do
     end
   end
 
-  contact = Contact.new :author => @author, :message => @message
+  contact = Contact.new 
+  contact.author = @author
+  contact.message = @message
   contact.save
 
   #erb "Ваше сообщение очень важно для нас, #{@author}!"
