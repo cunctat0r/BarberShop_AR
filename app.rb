@@ -21,14 +21,17 @@ class Contact < ActiveRecord::Base
 	validates :message, presence: true
 end
 
-before do
-	@barbers = Barber.order "created_at DESC"
-	@contacts = Contact.order "created_at DESC"
-	@client = Client.new
+before '/' do
+	@barbers = Barber.order "created_at DESC"	
 end
 
 get '/' do	
 	erb :index
+end
+
+before '/visit' do
+	@barbers = Barber.order "created_at DESC"
+	@client = Client.new
 end
 
 get '/visit' do  
@@ -50,6 +53,10 @@ end
 get '/showusers' do
   @users = Client.order "created_at DESC"
   erb :showusers
+end
+
+before '/contacts' do
+	@contacts = Contact.order "created_at DESC"	
 end
 
 get '/contacts' do  
@@ -75,8 +82,11 @@ get '/about' do
 end
 
 get '/barber/:id' do
-
   @barber = Barber.find params[:id]
-
   erb :barber
+end
+
+get '/client/:id' do
+  @client = Client.find params[:id]
+  erb :client
 end
